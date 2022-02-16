@@ -1,0 +1,30 @@
+import requests
+
+#This is a function to get the ingredient, meal type and dietary requirements from the user and give them recipes matching their requests
+def recipe_search(ingredient, mealtype, dietary):
+    #You need to register as a developer with Edamame to get an Application ID and Key
+    #These can be found in the applications section of the dashboard once you have signed in
+    app_id = "INSERT APP ID",
+    app_key = "INSERT APP KEY",
+    result = requests.get(
+                        'https://api.edamam.com/search?q={}&app_id={}&app_key={}&mealType={}&health'.format(ingredient, app_id, app_key, mealtype, dietary))
+    data = result.json()
+
+    return data["hits"]
+
+#This is a function to ask the user what their preferences are 
+def run():
+    ingredient = input("Enter an ingredient: ")
+    mealtype = input("What type of meal do you want? \n Choose from breakfast/lunch/dinner/snack/teatime/any. You can input multiple meals but they must be seperated with commas.")
+    dietary = input('Do you have any dietary requirements? \n Choose and enter from vegan/vegetarian/paleo/dairy-free/gluten-free/wheat-free/fat-free/low-sugar/egg-free/peanut-free/tree-nut-free/soy-free/fish-free/shellfish-free. \n You can enter multiple dietary requirements, but they must be seperated with commas.')
+    results = recipe_search(ingredient, mealtype, dietary)
+
+    for result in results:
+        recipe = result["recipe"]
+#This prints the recipe name and link on the website
+        print(recipe["label"])
+        print(recipe["uri"])
+        print()
+
+
+run()
